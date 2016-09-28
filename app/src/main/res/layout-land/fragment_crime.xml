@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_view"
+        android:padding="10dp"
+        style="?android:listSeparatorTextViewStyle"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_hint"
+        android:id="@+id/edit_text"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/crime_detail_label"
+        android:padding="10dp"
+        style="?android:listSeparatorTextViewStyle"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/date_button"
+        android:layout_weight="2"/>
+
+    <Button
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"
+         android:id="@+id/time_button"
+         android:layout_weight="2"
+         android:text="@string/time_button_text"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkbox_view"
+        android:text="@string/crime_solved"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
+    </LinearLayout>
+
+
+</LinearLayout>

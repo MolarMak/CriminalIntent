@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Criminal Intent</string>
+    <string name="edit_hint">Enter a title for a crime</string>
+    <string name="title_view">TITLE</string>
+    <string name="crime_detail_label">Crime Detail</string>
+    <string name="crime_solved">Solved?</string>
+    <string name="crime_title">Crimes</string>
+    <string name="date_picker_title">Date of crime: </string>
+    <string name="set_hour">Set hour</string>
+    <string name="set_time">Time of crime: </string>
+    <string name="time_button_text">Set time of crime</string>
+</resources>

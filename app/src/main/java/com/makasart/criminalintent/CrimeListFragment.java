@@ -1,10 +1,13 @@
 package com.makasart.criminalintent;
 
+import android.annotation.TargetApi;
 import android.app.ListFragment;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +29,7 @@ public class CrimeListFragment extends ListFragment {
     private ArrayList<Criminal> mCrimes;
     private boolean isLogged = true;
     private final static String TAG = "Criminal";
+    private boolean mIsShowTitle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,8 +38,10 @@ public class CrimeListFragment extends ListFragment {
         getActivity().setTitle(R.string.crime_title);
         mCrimes = CrimeLab.get(getActivity()).getCrimes();
 
+        setRetainInstance(true);
         CrimeAdapter adapter = new CrimeAdapter(mCrimes);
         setListAdapter(adapter);
+        mIsShowTitle = false;
     }
 
     @Override
@@ -86,6 +92,10 @@ public class CrimeListFragment extends ListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_crime_list, menu);
+        MenuItem showSubtitle = menu.findItem(R.id.menu_item_show_subtitle);
+        if (showSubtitle != null && mIsShowTitle) {
+            showSubtitle.setTitle(R.string.hide_subtitle);
+        }
     }
 
     @Override
@@ -99,10 +109,31 @@ public class CrimeListFragment extends ListFragment {
                 startActivityForResult(i, 0);
                 return true;
             case R.id.menu_item_show_subtitle:
-                getActivity().getActionBar().setSubtitle(R.string.subtitle);
+                if (getActivity().getActionBar().getSubtitle() == null) {
+                    getActivity().getActionBar().setSubtitle(R.string.subtitle);
+                    item.setTitle(R.string.hide_subtitle);
+                    mIsShowTitle = true;
+                } else {
+                    getActivity().getActionBar().setSubtitle(null);
+                    item.setTitle(R.string.show_subtitle);
+                    mIsShowTitle = false;
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @TargetApi(11)
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
+                             Bundle savedInstanceState) {
+        View v = super.onCreateView(inflater, parent, savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (mIsShowTitle) {
+                getActivity().getActionBar().setSubtitle(R.string.subtitle);
+            }
+        }
+        return v;
     }
 }

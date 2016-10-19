@@ -1,8 +1,10 @@
 package com.makasart.criminalintent;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.DialogFragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -48,11 +51,24 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
     private static final int DIALOG_CONST = 0;
 
     public static boolean isLogged = false;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case android.R.id.home:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       UUID crimeID = (UUID)getArguments().getSerializable(EXTRA_CRIME_ID);
+        setHasOptionsMenu(true);
+        UUID crimeID = (UUID)getArguments().getSerializable(EXTRA_CRIME_ID);
         mCriminal = CrimeLab.get(getActivity()).getCrime(crimeID);
         if (isLogged) {
             Log.d("LOG1", mCriminal.getTitle());
@@ -67,10 +83,14 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
         return fragment;
     }
 
+    @TargetApi(11)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime, parent, false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         mEditText = (EditText)v.findViewById(R.id.edit_text);
         mEditText.setText(mCriminal.getTitle());
         mEditText.addTextChangedListener(new TextWatcher() {

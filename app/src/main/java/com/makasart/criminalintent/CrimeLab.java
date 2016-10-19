@@ -13,15 +13,13 @@ public class CrimeLab {
     private static CrimeLab sCrimeLab;
     private Context mAppContext;
 
+    public void addCrime(Criminal c) {
+        mCrimes.add(c);
+    }
+
     private CrimeLab(Context appContext) {
         mAppContext = appContext;
         mCrimes = new ArrayList<Criminal>();
-        for (int i = 0; i < 100; i++) {
-            Criminal cr = new Criminal();
-            cr.setTitle("Crime #"+i);
-            cr.setSolved(i % 2 == 0);
-            mCrimes.add(cr);
-        }
     }
 
     public static CrimeLab get(Context c) {

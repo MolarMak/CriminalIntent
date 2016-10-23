@@ -4,14 +4,17 @@ import android.content.Context;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONTokener;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 /**
  * Created by Maxim on 23.10.2016.
@@ -41,5 +44,30 @@ public class CriminalIntentJSONSerializer {
                     writer.close();
             }
         }
+    }
+
+    public ArrayList<Criminal> loadCrimes() throws IOException, JSONException {
+        ArrayList<Criminal> crimes = new ArrayList<Criminal>();
+        BufferedReader reader = null;
+        try {
+            InputStream input = mContext.openFileInput(mFileName);
+            reader = new BufferedReader(new InputStreamReader(input));
+            StringBuilder jsonString = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                jsonString.append(line);
+            }
+            JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
+            for (int i = 0; i < array.length(); i++) {
+                crimes.add(new Criminal(array.getJSONObject(i)));
+            }
+        } catch (FileNotFoundException e) {
+
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
+        return crimes;
     }
 }

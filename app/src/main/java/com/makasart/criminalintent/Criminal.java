@@ -30,6 +30,7 @@ public class Criminal {
         mDate = new Date();
     }
 
+    //JSON package and unpackage
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mID.toString());
@@ -39,6 +40,14 @@ public class Criminal {
         Log.i("BLUA", json.toString());
         return json;
     }
+
+    public Criminal(JSONObject json) throws JSONException {
+        mID = UUID.fromString(json.getString(JSON_ID));
+        mTitle = json.getString(JSON_TITLE);
+        mDate = new Date(json.getLong(JSON_DATE));
+        mSolved = json.getBoolean(JSON_SOLVED);
+    }
+    //JSON package and unpackage
 
     public UUID getID() {
         return mID;

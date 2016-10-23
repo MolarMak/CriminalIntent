@@ -9,6 +9,7 @@ import android.view.View;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -28,10 +29,18 @@ public class CrimeLab {
         mCrimes.add(c);
     }
 
+    //JSON load
     private CrimeLab(Context appContext) {
         mAppContext = appContext;
-        mCrimes = new ArrayList<Criminal>();
+        mSerializer = new CriminalIntentJSONSerializer(appContext, FILENAME);
+        try {
+            mCrimes = mSerializer.loadCrimes();
+        } catch (Exception e) {
+            mCrimes = new ArrayList<Criminal>();
+            Log.e(TAG, "Error loading page ", e);
+        }
     }
+    //JSON load
 
     public static CrimeLab get(Context c) {
         if (sCrimeLab == null) {
@@ -44,6 +53,7 @@ public class CrimeLab {
         return mCrimes;
     }
 
+    //JSON save
     public boolean saveCrimes() {
         try {
             mAppContext.getApplicationContext();
@@ -56,6 +66,7 @@ public class CrimeLab {
             return false;
         }
     }
+    //JSON save
 
     public Criminal getCrime(UUID id) {
         for (Criminal c: mCrimes) {

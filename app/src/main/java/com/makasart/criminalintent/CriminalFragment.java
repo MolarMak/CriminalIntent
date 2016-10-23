@@ -79,11 +79,13 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
         }
     }
 
+    //JSON Save
     @Override
     public void onPause() {
         super.onPause();
         CrimeLab.get(getActivity()).saveCrimes();
     }
+    //JSON Save
 
     public static CriminalFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();

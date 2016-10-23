@@ -18,8 +18,6 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 /**
@@ -37,7 +35,6 @@ public class CrimeListFragment extends ListFragment {
         setHasOptionsMenu(true);
         getActivity().setTitle(R.string.crime_title);
         mCrimes = CrimeLab.get(getActivity()).getCrimes();
-
         setRetainInstance(true);
         CrimeAdapter adapter = new CrimeAdapter(mCrimes);
         setListAdapter(adapter);

@@ -23,6 +23,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -76,6 +77,12 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
         if (isLogged) {
             Log.d("LOG1", mCriminal.getTitle());
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        CrimeLab.get(getActivity()).saveCrimes();
     }
 
     public static CriminalFragment newInstance(UUID crimeId) {

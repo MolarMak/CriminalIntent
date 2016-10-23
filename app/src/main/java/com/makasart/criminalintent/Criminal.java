@@ -1,5 +1,10 @@
 package com.makasart.criminalintent;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -7,6 +12,11 @@ import java.util.UUID;
  * Created by Maxim on 14.09.2016.
  */
 public class Criminal {
+
+    private static final String JSON_ID = "id";
+    private static final String JSON_TITLE = "title";
+    private static final String JSON_DATE = "date";
+    private static final String JSON_SOLVED = "solved";
 
     private UUID mID;
     private String mTitle;
@@ -18,6 +28,16 @@ public class Criminal {
     public Criminal(){
         mID = UUID.randomUUID();
         mDate = new Date();
+    }
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(JSON_ID, mID.toString());
+        json.put(JSON_DATE, mDate.getTime());
+        json.put(JSON_SOLVED, mSolved);
+        json.put(JSON_TITLE, mTitle);
+        Log.i("BLUA", json.toString());
+        return json;
     }
 
     public UUID getID() {

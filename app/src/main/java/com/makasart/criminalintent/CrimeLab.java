@@ -29,6 +29,10 @@ public class CrimeLab {
         mCrimes.add(c);
     }
 
+    public void deleteCrime(Criminal c) {
+        mCrimes.remove(c);
+    }
+
     //JSON load
     private CrimeLab(Context appContext) {
         mAppContext = appContext;

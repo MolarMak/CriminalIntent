@@ -39,6 +39,7 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
     private Button mDateButton;
     private Button mTimeButton;
     private CheckBox mSolvedCheckBox;
+    private Button mDeleteCrimeButton;
     private int mHour, mMinutes;
 
     public final static String EXTRA_CRIME_ID = "com.makasart.criminalintent.CriminalFragment.EXTRA_CRIME_ID";
@@ -166,6 +167,17 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mCriminal.setSolved(isChecked);
+            }
+        });
+
+        mDeleteCrimeButton = (Button)v.findViewById(R.id.delete_button);
+        mDeleteCrimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CrimeLab.get(getActivity()).deleteCrime(mCriminal);
+                if (NavUtils.getParentActivityName(getActivity()) != null) {
+                    NavUtils.navigateUpFromSameTask(getActivity());
+                }
             }
         });
 

@@ -65,6 +65,7 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
     public static boolean isLogged = true;
 
     private ImageView mImageView;
+    private static final String DIALOG_IMAGE = "image";
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -217,6 +218,19 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
             mImageButton.setEnabled(false);
         }
         mImageView = (ImageView)v.findViewById(R.id.crime_ImageView);
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Photo p = mCriminal.getPhoto();
+                if (p == null)
+                    return;
+
+                FragmentManager fm = getActivity().getFragmentManager();
+                String path = getActivity().getFileStreamPath(p.getFilename()).getAbsolutePath();
+                ImageFragment.newInstance(path).show(fm, DIALOG_IMAGE);
+
+            }
+        });
 
 
         return v;

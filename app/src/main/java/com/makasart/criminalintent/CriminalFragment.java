@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.DialogFragment;
 import android.app.FragmentManager;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TimePicker;
 
 import java.io.IOException;
@@ -52,6 +54,8 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
     private static final int TIME_CONST = 1;
     private static final String DIALOG_DATE = "date";
     private static final int DIALOG_CONST = 0;
+
+    private ImageButton mImageButton;
 
     public static boolean isLogged = false;
 
@@ -180,6 +184,19 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
                 }
             }
         });
+        mImageButton = (ImageButton)v.findViewById(R.id.imageButton);
+        mImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), CrimeCameraActivity.class);
+                startActivity(i);
+            }
+        });
+        PackageManager pm = getActivity().getPackageManager();
+        if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA) &&
+                !pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
+            mImageButton.setEnabled(false);
+        }
 
         return v;
     }

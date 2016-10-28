@@ -16,4 +16,5 @@
     <string name="delete_crime">Delete</string>
     <string name="no_element_list">No element in the list</string>
     <string name="delete_crime_in_fragment">Delete this crime</string>
+    <string name="take">Take</string>
 </resources>

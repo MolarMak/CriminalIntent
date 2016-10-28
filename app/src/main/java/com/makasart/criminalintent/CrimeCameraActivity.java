@@ -3,11 +3,12 @@ package com.makasart.criminalintent;
 import android.support.v4.app.Fragment;
 
 /**
- * Created by Maxim on 19.09.2016.
+ * Created by Maxim on 26.10.2016.
  */
-public class CrimeListActivity extends SingleFragmentActivity {
+
+public class CrimeCameraActivity extends SingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
-        return new CrimeListFragment();
+        return new CrimeCameraFragment();
     }
 }

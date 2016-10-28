@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Picture;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.v4.app.DialogFragment;
 import android.app.FragmentManager;
@@ -23,6 +25,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 
 import java.io.IOException;
@@ -61,6 +64,8 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
 
     public static boolean isLogged = true;
 
+    private ImageView mImageView;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
@@ -93,6 +98,18 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
         CrimeLab.get(getActivity()).saveCrimes();
     }
     //JSON Save
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ShowPhoto();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        PictureUtils.cleanImageView(mImageView);
+    }
 
     public static CriminalFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
@@ -199,6 +216,8 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
                 !pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
             mImageButton.setEnabled(false);
         }
+        mImageView = (ImageView)v.findViewById(R.id.crime_ImageView);
+
 
         return v;
     }
@@ -226,8 +245,24 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
                 if (isLogged) {
                     Log.d(TAG, filename+ " was catching!");
                 }
+                Photo mPhoto = new Photo(filename);
+                mCriminal.setPhoto(mPhoto);
+                if (isLogged) {
+                    Log.d(TAG, mCriminal.getTitle() + " has a photo " + filename + "!");
+                }
+                ShowPhoto();
             }
         }
+    }
+
+    private void ShowPhoto() {
+        Photo p = mCriminal.getPhoto();
+        BitmapDrawable b = null;
+        if (p != null) {
+            String path = getActivity().getFileStreamPath(p.getFilename()).getAbsolutePath();
+            b = PictureUtils.getScaledDrawable(getActivity(), path);
+        }
+        mImageView.setImageDrawable(b);
     }
 
     public synchronized void updateDate() {

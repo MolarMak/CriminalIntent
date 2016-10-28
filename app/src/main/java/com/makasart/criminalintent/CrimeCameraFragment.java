@@ -1,6 +1,9 @@
 package com.makasart.criminalintent;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.os.Build;
@@ -14,8 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Maxim on 26.10.2016.
@@ -27,8 +32,55 @@ import java.util.List;
 
     private Camera mCamera;
     private SurfaceView mSurfaceView;
+    private View mProgressContainer;
 
     private boolean isLogged = true;
+
+    private Camera.ShutterCallback mShutterCallback = new Camera.ShutterCallback() {
+        @Override
+        public void onShutter() {
+            mProgressContainer.setVisibility(View.VISIBLE);
+        }
+    };
+
+    private Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            String filename = UUID.randomUUID().toString()+".jpg";
+            FileOutputStream os = null;
+            boolean success = true;
+            try {
+                os = getActivity().openFileOutput(filename, Context.MODE_PRIVATE);
+                os.write(data);
+            } catch (IOException e) {
+                e.printStackTrace();
+                success = false;
+            } finally {
+                try {
+                    if (os != null) {
+                        os.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    success = false;
+                }
+            }
+            if (success) {
+                Intent i = new Intent();
+                //PUT EXTRA NAME OF PHOTO
+                i.putExtra(CriminalFragment.EXTRA_PHOTO_FILENAME, filename);
+                getActivity().setResult(Activity.RESULT_OK, i);
+                //
+                if (isLogged) {
+                    Log.d(TAG, "Created file successful "+filename);
+                }
+            }
+            else {
+                getActivity().setResult(Activity.RESULT_CANCELED);
+            }
+            getActivity().finish();
+        }
+    };
 
     @TargetApi(9)
     @Override
@@ -60,11 +112,16 @@ import java.util.List;
         if (isLogged) {
             Log.d(TAG, "Start View");
         }
+        mProgressContainer = v.findViewById(R.id.crime_camera_progressContainer);
+        mProgressContainer.setVisibility(View.INVISIBLE);
+
         Button takePictureButton = (Button)v.findViewById(R.id.make_photo_button);
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                if (mCamera != null) {
+                    mCamera.takePicture(mShutterCallback, null, mPictureCallback);
+                }
                 if (isLogged) {
                     Log.d(TAG, "Finish!");
                 }
@@ -96,6 +153,8 @@ import java.util.List;
                 Camera.Parameters parameters = mCamera.getParameters();
                 Size s = getBestSupportedSize(parameters.getSupportedPreviewSizes(), width, height);
                 parameters.setPreviewSize(s.width, s.height);
+                s = getBestSupportedSize(parameters.getSupportedPictureSizes(), width, height);
+                parameters.setPictureSize(s.width, s.height);
                 mCamera.setParameters(parameters);
                 if (isLogged) {
                     Log.d(TAG, "In Surface Changed!");

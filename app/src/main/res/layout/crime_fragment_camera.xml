@@ -18,4 +18,18 @@
             android:text="@string/take"/>
     </LinearLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/crime_camera_progressContainer"
+        android:clickable="true">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@android:style/Widget.ProgressBar.Large"/>
+
+    </FrameLayout>
+
 </FrameLayout>

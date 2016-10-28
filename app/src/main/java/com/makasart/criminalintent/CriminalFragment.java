@@ -48,7 +48,7 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
     public static final String RETURN_DATE = "RETURN_DATE";
     public static final String RETURN_HOUR = "RETURN_HOUR";
     public static final String RETURN_MINUTES = "RETURN_MINUTES";
-    public static final String TAG = "CF";
+    public static final String TAG = "CriminalFragment";
 
     private static final String DIALOG_TIME = "time";
     private static final int TIME_CONST = 1;
@@ -56,8 +56,10 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
     private static final int DIALOG_CONST = 0;
 
     private ImageButton mImageButton;
+    private static final int REQUEST_PHOTO = 2;
+    public static final String EXTRA_PHOTO_FILENAME = "com.makasart.criminalintent.photo_filename";
 
-    public static boolean isLogged = false;
+    public static boolean isLogged = true;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -189,7 +191,7 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), CrimeCameraActivity.class);
-                startActivity(i);
+                startActivityForResult(i, REQUEST_PHOTO);
             }
         });
         PackageManager pm = getActivity().getPackageManager();
@@ -217,6 +219,14 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
             mCriminal.setHour(mHour);
             mCriminal.setMinutes(mMinutes);
             mTimeButton.setText(timeIsNow);
+        }
+        if (requestCode == REQUEST_PHOTO) {
+            String filename = data.getStringExtra(EXTRA_PHOTO_FILENAME);
+            if (filename != null) {
+                if (isLogged) {
+                    Log.d(TAG, filename+ " was catching!");
+                }
+            }
         }
     }
 

@@ -22,6 +22,7 @@
                        android:value=".CrimeListActivity"/>
         </activity>
         <activity android:name=".CrimeCameraActivity"
+                  android:exported="true"
                   android:screenOrientation="landscape"
                   android:label="@string/app_name">
 

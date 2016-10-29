@@ -71,27 +71,36 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/date_button"
-        android:layout_weight="2"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/date_button"
+            android:layout_weight="2"/>
 
-    <Button
-         android:layout_width="0dp"
-         android:layout_height="wrap_content"
-         android:id="@+id/time_button"
-         android:layout_weight="2"
-         android:text="@string/time_button_text"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/time_button"
+            android:layout_weight="2"
+            android:text="@string/time_button_text"/>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/checkbox_view"
-        android:text="@string/crime_solved"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"/>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkbox_view"
+            android:text="@string/crime_solved"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
     </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/delete_button"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="@string/delete_crime_in_fragment"/>
 
 
 </LinearLayout>

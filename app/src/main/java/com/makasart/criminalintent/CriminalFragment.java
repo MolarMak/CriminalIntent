@@ -83,13 +83,10 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
         setHasOptionsMenu(true);
         UUID crimeID = (UUID)getArguments().getSerializable(EXTRA_CRIME_ID);
         mCriminal = CrimeLab.get(getActivity()).getCrime(crimeID);
-        if (isLogged) {
-            Log.d("LOG1", mCriminal.getTitle());
-        }
     }
 
     //JSON Save

@@ -1,10 +1,12 @@
 package com.makasart.criminalintent;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,8 +52,17 @@ public class TimePickerFragment extends android.support.v4.app.DialogFragment {
 
         TimePicker mTimePicker = (TimePicker)v.findViewById(R.id.time_picker_fragment);
         mTimePicker.setIs24HourView(true);
-        mTimePicker.setHour(hour);
-        mTimePicker.setMinute(minutes);
+
+        //to support old versions
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            mTimePicker.setCurrentHour(hour);
+            mTimePicker.setCurrentMinute(minutes);
+        } else {
+            mTimePicker.setHour(hour);
+            mTimePicker.setMinute(minutes);
+        }
+        //
+
         mTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {

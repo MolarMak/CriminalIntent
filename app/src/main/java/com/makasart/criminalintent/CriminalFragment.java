@@ -5,9 +5,12 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Picture;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -29,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.TimePicker;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -45,6 +49,8 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
     private Button mTimeButton;
     private CheckBox mSolvedCheckBox;
     private Button mDeleteCrimeButton;
+    private Button mReportButton;
+    private Button mSuspectButton;
     private int mHour, mMinutes;
 
     public final static String EXTRA_CRIME_ID = "com.makasart.criminalintent.CriminalFragment.EXTRA_CRIME_ID";
@@ -61,6 +67,9 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
     private ImageButton mImageButton;
     private static final int REQUEST_PHOTO = 2;
     public static final String EXTRA_PHOTO_FILENAME = "com.makasart.criminalintent.photo_filename";
+
+    private static final int REQUEST_CONTACT = 3;
+
 
     public static boolean isLogged = true;
 
@@ -228,8 +237,30 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
 
             }
         });
+        mReportButton = (Button)v.findViewById(R.id.report_button);
+        mReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
+                i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
+                i = i.createChooser(i, getString(R.string.send_report));
+                startActivity(i);
+            }
+        });
 
-
+        mSuspectButton = (Button)v.findViewById(R.id.suspect_button);
+        mSuspectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(i, REQUEST_CONTACT);
+            }
+        });
+        if (mCriminal.getSuspect() != null) {
+            mSuspectButton.setText(mCriminal.getSuspect());
+        }
         return v;
     }
 
@@ -264,6 +295,25 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
                 ShowPhoto();
             }
         }
+        if (requestCode == REQUEST_CONTACT) {
+            Uri contactUri = data.getData();
+
+            String []queryField = new String [] {
+                    ContactsContract.Contacts.DISPLAY_NAME
+            };
+            Cursor c = getActivity().getContentResolver().query(contactUri, queryField,
+                    null, null, null);
+            if (c.getCount() == 0) {
+                c.close();
+                return;
+            }
+
+            c.moveToFirst();
+            String suspect = c.getString(0);
+            mCriminal.setSuspect(suspect);
+            mSuspectButton.setText(suspect);
+            c.close();
+        }
     }
 
     private void ShowPhoto() {
@@ -280,5 +330,29 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
         String replacement;
         replacement = (String) DateFormat.format("E/d/M/y", mCriminal.getDate());
         mDateButton.setText(replacement);
+    }
+
+    private String getCrimeReport() {
+        String solvedString = null;
+        if (mCriminal.isSolved()) {
+            solvedString = getString(R.string.crime_report_solved);
+        }
+        if (!mCriminal.isSolved()) {
+            solvedString = getString(R.string.crime_report_unsolved);
+        }
+
+        String dateFormat = "EEE, MM dd";
+        String dateString = DateFormat.format(dateFormat, Calendar.getInstance()).toString();
+        Log.d("MYSS", dateString);
+
+        String suspect = mCriminal.getSuspect();
+        if (suspect == null) {
+            suspect = getString(R.string.crime_report_no_suspect);
+        } else {
+            suspect = getString(R.string.crime_report_suspect, suspect);
+        }
+
+        return getString(R.string.crime_report,
+                mCriminal.getTitle(), dateString, solvedString, suspect);
     }
 }

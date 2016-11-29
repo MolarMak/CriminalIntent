@@ -1,15 +1,8 @@
 package com.makasart.criminalintent;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.util.Log;
-import android.view.View;
 
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 

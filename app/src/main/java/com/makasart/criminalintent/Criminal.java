@@ -18,6 +18,7 @@ public class Criminal {
     private static final String JSON_DATE = "date";
     private static final String JSON_SOLVED = "solved";
     private static final String JSON_PHOTO = "photo";
+    private static final String JSON_SUSPECT = "suspect";
 
     private UUID mID;
     private String mTitle;
@@ -26,6 +27,7 @@ public class Criminal {
     private int mHour = -1;
     private int mMinutes = -1;
     private Photo mPhoto;
+    private String mSuspect;
 
     public Criminal(){
         mID = UUID.randomUUID();
@@ -41,6 +43,7 @@ public class Criminal {
         json.put(JSON_TITLE, mTitle);
         if (mPhoto != null) {
             json.put(JSON_PHOTO, mPhoto.toJSON());
+            json.put(JSON_SUSPECT, mSuspect);
         }
         return json;
     }
@@ -53,8 +56,20 @@ public class Criminal {
         if (json.has(JSON_PHOTO)) {
             mPhoto = new Photo(json.getJSONObject(JSON_PHOTO));
         }
+        if (json.has(JSON_SUSPECT)) {
+            mSuspect = json.getString(JSON_SUSPECT);
+        }
     }
     //JSON package and unpackage
+
+
+    public String getSuspect() {
+        return mSuspect;
+    }
+
+    public void setSuspect(String suspect) {
+        mSuspect = suspect;
+    }
 
     public Photo getPhoto() {
         return mPhoto;

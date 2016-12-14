@@ -93,14 +93,44 @@
             android:layout_marginRight="16dp"/>
     </LinearLayout>
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/delete_button"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
         android:layout_marginLeft="16dp"
-        android:text="@string/delete_crime_in_fragment"/>
+        android:text="@string/delete_crime_in_fragment"
+        android:layout_weight=".33"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/suspend_button"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="@string/suspend_text"
+        android:layout_weight=".33"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/report_button"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="5dp"
+        android:text="@string/report_text"
+        android:layout_weight=".33"/>
+
+
+    </LinearLayout>
 
 
 </LinearLayout>

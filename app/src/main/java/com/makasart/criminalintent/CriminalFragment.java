@@ -250,7 +250,7 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        mSuspectButton = (Button)v.findViewById(R.id.suspect_button);
+        mSuspectButton = (Button)v.findViewById(R.id.suspend_button);
         mSuspectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

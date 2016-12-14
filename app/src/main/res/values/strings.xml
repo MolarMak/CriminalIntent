@@ -17,4 +17,13 @@
     <string name="no_element_list">No element in the list</string>
     <string name="delete_crime_in_fragment">Delete this crime</string>
     <string name="take">Take</string>
+    <string name="suspend_text">Suspend</string>
+    <string name="report_text">Report</string>
+    <string name="crime_report">%1$s! The crime was discovered on %2$s. %3$s, and %4$s</string>
+    <string name="crime_report_solved">The case is solved</string>
+    <string name="crime_report_unsolved">The case is not solved</string>
+    <string name="crime_report_no_suspect">There is no suspect.</string>
+    <string name="crime_report_suspect">The suspect is %s.</string>
+    <string name="crime_report_subject">CriminalIntent Crime Report</string>
+    <string name="send_report">Send crime report via</string>
 </resources>

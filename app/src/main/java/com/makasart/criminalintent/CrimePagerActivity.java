@@ -1,9 +1,12 @@
 package com.makasart.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ import java.util.UUID;
 /**
  * Created by Maxim on 22.09.2016.
  */
-public class CrimePagerActivity extends FragmentActivity {
+public class CrimePagerActivity extends FragmentActivity implements CrimeListFragment.Callbacks {
     private ViewPager mViewPager;
     private ArrayList<Criminal> mCrimes;
 
@@ -69,5 +72,33 @@ public class CrimePagerActivity extends FragmentActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onCrimeSelected(Criminal crime) {
+        if(findViewById(R.id.detailFragmentContainer) == null) {
+            Intent i = new Intent(this, CrimePagerActivity.class);
+            i.putExtra(CriminalFragment.EXTRA_CRIME_ID, crime.getID());
+            startActivity(i);
+        } else {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            Fragment oldDetail = fm.findFragmentById(R.id.detailFragmentContainer);
+            Fragment newDetail = CriminalFragment.newInstance(crime.getID());
+            if (oldDetail != null) {
+                ft.remove(oldDetail);
+            }
+            ft.add(R.id.detailFragmentContainer, newDetail);
+            ft.commit();
+        }
+    }
+
+    @Override
+    public void onCrimeUpdater(Criminal crime) {
+        if(findViewById(R.id.detailFragmentContainer) != null) {
+            FragmentManager fm = getSupportFragmentManager();
+            CrimeListFragment listFragment = (CrimeListFragment) fm.findFragmentById(R.id.fragmentContainer);
+            listFragment.updateUI();
+        }
     }
 }

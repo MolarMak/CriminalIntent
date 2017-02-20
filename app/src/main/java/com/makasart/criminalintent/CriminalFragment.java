@@ -76,6 +76,20 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
     private ImageView mImageView;
     private static final String DIALOG_IMAGE = "image";
 
+    private CrimeListFragment.Callbacks mCallbacks;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallbacks = (CrimeListFragment.Callbacks)activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
@@ -146,6 +160,7 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mCallbacks.onCrimeUpdater(mCriminal);
                 mCriminal.setTitle(s.toString());
             }
 
@@ -197,6 +212,7 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mCriminal.setSolved(isChecked);
+                mCallbacks.onCrimeUpdater(mCriminal);
             }
         });
 
@@ -271,6 +287,7 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
         if (requestCode == DIALOG_CONST) {
             Date date = (Date) data.getSerializableExtra(RETURN_DATE);
             mCriminal.setDate(date);
+            mCallbacks.onCrimeUpdater(mCriminal);
             updateDate();
         }
         if (requestCode == TIME_CONST) {
@@ -279,6 +296,7 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
             String timeIsNow = Integer.toString(mHour)+":"+Integer.toString(mMinutes);
             mCriminal.setHour(mHour);
             mCriminal.setMinutes(mMinutes);
+            mCallbacks.onCrimeUpdater(mCriminal);
             mTimeButton.setText(timeIsNow);
         }
         if (requestCode == REQUEST_PHOTO) {
@@ -292,6 +310,7 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
                 if (isLogged) {
                     Log.d(TAG, mCriminal.getTitle() + " has a photo " + filename + "!");
                 }
+                mCallbacks.onCrimeUpdater(mCriminal);
                 ShowPhoto();
             }
         }
@@ -311,6 +330,7 @@ public class CriminalFragment extends android.support.v4.app.Fragment {
             c.moveToFirst();
             String suspect = c.getString(0);
             mCriminal.setSuspect(suspect);
+            mCallbacks.onCrimeUpdater(mCriminal);
             mSuspectButton.setText(suspect);
             c.close();
         }
